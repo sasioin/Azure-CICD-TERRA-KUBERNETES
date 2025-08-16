@@ -10,7 +10,7 @@ stages:
   jobs:
   - job: FirstJob
     steps:
-    - bash: echo Hello, Build!
+    - bash: echo Hello, Build! (variable-new)
 
 - stage: DevDeploy
   dependsOn: 
@@ -19,7 +19,7 @@ stages:
   jobs:
   - job: SecondJob
     steps:
-    - bash: echo Hello, DevDeploy!
+    - bash: echo Hello, DevDeploy! $(variable-new) 
 
 - stage: QADeploy
   dependsOn: Build
