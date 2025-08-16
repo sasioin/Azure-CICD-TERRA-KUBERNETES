@@ -11,6 +11,10 @@ stages:
   - job: FirstJob
     steps:
     - bash: echo Hello, Build! $(variable-new)
+    - bash: echo $(Agent.OS)
+    - bash: echo $(Agent.OSArchitecture)
+    - bash: echo $(Build.BuildNumber	)
+    - bash: echo $(Build.BinariesDirectory	)
 
 - stage: DevDeploy
   dependsOn: 
