@@ -13,7 +13,7 @@ stages:
     - bash: echo $(Agent.OSArchitecture)
     - bash: echo $(Build.BuildNumber)
     - bash: echo $(Build.BinariesDirectory)
-    - bash: echo ls -R $(Build.ArtifactStagingDirectory)
+    - bash: ls -R $(Build.ArtifactStagingDirectory)
 
 - stage: DevDeploy
   dependsOn: 
