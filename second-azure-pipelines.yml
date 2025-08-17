@@ -14,8 +14,8 @@ stages:
     - bash: echo $(Build.BuildNumber)
     - bash: echo $(Build.BinariesDirectory)
     - bash:
-        echo "lIST OF IT "
         ls -R $(Build.ArtifactStagingDirectory)
+      displayName: List of files staging
 
 - stage: DevDeploy
   dependsOn: 
