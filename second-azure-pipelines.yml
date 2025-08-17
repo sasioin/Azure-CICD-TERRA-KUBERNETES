@@ -1,5 +1,3 @@
-trigger:
-- main
 
 pool:
   vmImage: ubuntu-latest
@@ -37,3 +35,12 @@ stages:
   - job: FourthJob
     steps:
     - bash: echo Hello, ProdDeploy!
+
+    
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'System.DefaultWorkingDirectory'
+        Contents: |
+          **/*.yaml
+          **/*.tf
+        TargetFolder: 'Build.ArtifactStagingDirectory'
