@@ -47,4 +47,8 @@ stages:
         TargetFolder: $(Build.ArtifactStagingDirectory)
 
 
-    - bash: echo ls -R $(Build.ArtifactStagingDirectory)
+    - bash: |
+        echo "Listing contents of artifact staging directory:"
+        ls -R $(Build.ArtifactStagingDirectory)
+      displayName: 'List copied files'
+
