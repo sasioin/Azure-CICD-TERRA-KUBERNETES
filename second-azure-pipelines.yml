@@ -13,7 +13,7 @@ stages:
     - bash: echo $(Agent.OSArchitecture)
     - bash: echo $(Build.BuildNumber	)
     - bash: echo $(Build.BinariesDirectory	)
-    - bash: echo ls -R $(Build.ArtifactStagingDirectory	)
+    - bash: echo ls $(Build.ArtifactStagingDirectory	)
 
 - stage: DevDeploy
   dependsOn: 
@@ -40,8 +40,11 @@ stages:
     
     - task: CopyFiles@2
       inputs:
-        SourceFolder: 'System.DefaultWorkingDirectory'
+        SourceFolder: $(System.DefaultWorkingDirectory)
         Contents: |
           **/*.yaml
           **/*.tf
-        TargetFolder: 'Build.ArtifactStagingDirectory'
+        TargetFolder: $(Build.ArtifactStagingDirectory)
+
+
+    - bash: echo ls -R $(Build.ArtifactStagingDirectory	)
