@@ -14,7 +14,7 @@ stages:
     - bash: echo $(Build.BuildNumber)
     - bash: echo $(Build.BinariesDirectory)
     - bash:
-        ls -R $(Build.ArtifactStagingDirectory)
+        ls -R $(System.DefaultWorkingDirectory)
       displayName: List of files staging
 
 - stage: DevDeploy
