@@ -18,15 +18,6 @@ steps:
   displayName: 'Install Terraform manually'
 
 
-
-# Validate Terraform configuration
-- task: TerraformCLI@2
-  displayName: 'Terraform Validate'
-  inputs:
-    command: 'validate'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/configuration/iaac/azure/kubernetes'
-
-# Terraform Init (backend config)
 - task: TerraformCLI@2
   displayName: 'Terraform Init'
   inputs:
@@ -41,11 +32,10 @@ steps:
     backendAzureRmContainerName: 'conatainerstoragesasio'
     backendAzureRmKey: 'K8S-DEV'
 
-# Optional Plan with vars (using secure file + pipeline vars)
 - task: TerraformCLI@2
-  displayName: 'Terraform Plan'
+  displayName: 'Terraform Validate'
   inputs:
-    command: 'plan'
+    command: 'validate'
     workingDirectory: '$(System.DefaultWorkingDirectory)/configuration/iaac/azure/kubernetes'
-    commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
+
 
