@@ -8,19 +8,27 @@ pool:
 steps:
 - script: echo HELLO K8S
   displayName: 'Run a one-line script'
-  
 
-- task: DownloadSecureFile@1
-  name: publickey
-  inputs:
-    secureFile: 'azure_rsa.pub'
+# Install Terraform first
+- script: |
+    curl -sLo terraform.zip https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip
+    unzip terraform.zip
+    sudo mv terraform /usr/local/bin/
+    terraform -version
+  displayName: 'Install Terraform manually'
 
+
+
+# Validate Terraform configuration
 - task: TerraformCLI@2
+  displayName: 'Terraform Validate'
   inputs:
     command: 'validate'
-    commandOptions: '- task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0   displayName: ''Install Terraform''   inputs:     terraformVersion: ''1.5.7'''
-    allowTelemetryCollection: true
+    workingDirectory: '$(System.DefaultWorkingDirectory)/configuration/iaac/azure/kubernetes'
+
+# Terraform Init (backend config)
 - task: TerraformCLI@2
+  displayName: 'Terraform Init'
   inputs:
     command: 'init'
     workingDirectory: '$(System.DefaultWorkingDirectory)/configuration/iaac/azure/kubernetes'
@@ -28,14 +36,16 @@ steps:
     backendServiceArm: 'azure-resource-manager-service-connection'
     ensureBackend: true
     backendAzureRmResourceGroupName: 'terraform-backend-rg'
-- task: TerraformCLI@2
-  inputs:
-    command: 'init'
-    commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
-    backendType: 'azurerm'
     backendAzureRmResourceGroupLocation: 'westeurope'
     backendAzureRmStorageAccountName: 'stroageaccsasio'
     backendAzureRmContainerName: 'conatainerstoragesasio'
     backendAzureRmKey: 'K8S-DEV'
-    allowTelemetryCollection: true
+
+# Optional Plan with vars (using secure file + pipeline vars)
+- task: TerraformCLI@2
+  displayName: 'Terraform Plan'
+  inputs:
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/configuration/iaac/azure/kubernetes'
+    commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
 
