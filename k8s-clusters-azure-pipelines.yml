@@ -5,19 +5,13 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo K8S Terraform Azure!
+- script: echo "K8S Terraform Azure!"
   displayName: 'Run a one-line script'
+
 - task: DownloadSecureFile@1
   name: publickey
   inputs:
     secureFile: 'azure_rsa.pub'
-
-- script: |
-    curl -sLo terraform.zip https://releases.hashicorp.com/terraform/1.12.2/terraform_1.12.2_linux_amd64.zip
-    unzip terraform.zip
-    sudo mv terraform /usr/local/bin/
-    terraform -version
-  displayName: 'Install Terraform manually'
 
 - task: TerraformCLI@2
   displayName: 'Terraform Init'
@@ -28,10 +22,9 @@ steps:
     backendServiceArm: 'azure-resource'
     ensureBackend: true
     backendAzureRmResourceGroupName: 'terraform-backend-rg'
-    backendAzureRmStorageAccountName: 'stroageaccsasio'
-    backendAzureRmContainerName: 'conatainerstoragesasio'
+    backendAzureRmStorageAccountName: 'storageaccsasio'
+    backendAzureRmContainerName: 'containerstoragesasio'
     backendAzureRmKey: 'K8S-DEV'
-    allowTelemetryCollection: true
 
 
 
