@@ -15,10 +15,11 @@ steps:
   inputs:
     secureFile: 'azure_rsa.pub'
 
-- task: TerraformInstaller@0
-  displayName: 'Install Terraform'
+- task: TerraformCLI@2
   inputs:
-    terraformVersion: '1.5.7'
+    command: 'validate'
+    commandOptions: '- task: UseTerraform@0   inputs:     terraformVersion: ''1.5.7'''
+    allowTelemetryCollection: true
 
 - task: TerraformCLI@2
   inputs:
