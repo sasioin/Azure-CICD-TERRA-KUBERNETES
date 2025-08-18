@@ -1,41 +1,32 @@
-
 trigger:
-- main
+- master
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo HELLO K8S
+- script: echo K8S Terraform Azure!
   displayName: 'Run a one-line script'
+- task: DownloadSecureFile@1
+  name: publickey
+  inputs:
+    secureFile: 'azure_rsa.pub'
 
-# Install Terraform first
-- script: |
-    curl -sLo terraform.zip https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip
-    unzip terraform.zip
-    sudo mv terraform /usr/local/bin/
-    terraform -version
-  displayName: 'Install Terraform manually'
-
-
-- task: TerraformCLI@2
-  displayName: 'Terraform Init'
+- task: TerraformCLI@0
   inputs:
     command: 'init'
     workingDirectory: '$(System.DefaultWorkingDirectory)/configuration/iaac/azure/kubernetes'
+    commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
     backendType: 'azurerm'
     backendServiceArm: 'azure-resource-manager-service-connection'
     ensureBackend: true
     backendAzureRmResourceGroupName: 'terraform-backend-rg'
     backendAzureRmResourceGroupLocation: 'westeurope'
-    backendAzureRmStorageAccountName: 'stroageaccsasio'
-    backendAzureRmContainerName: 'conatainerstoragesasio'
-    backendAzureRmKey: 'K8S-DEV'
+    backendAzureRmStorageAccountName: 'storageacctsasio123'
+    backendAzureRmContainerName: 'storageacctsasiocontainer'
+    backendAzureRmKey: 'kubernetes-dev.tfstate'
 
-- task: TerraformCLI@2
-  displayName: 'Terraform Validate'
-  inputs:
-    command: 'validate'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/configuration/iaac/azure/kubernetes'
+
+
 
 
