@@ -18,7 +18,7 @@ steps:
 - task: TerraformCLI@2
   inputs:
     command: 'validate'
-    commandOptions: '- task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0   displayName: ''Install Terraform''   inputs:     terraformVersion: ''1.5.7'''
+    commandOptions: '- task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0   displayName: ''Install Terraform''   inputs:     terraformVersion: ''1.5.7'''
     allowTelemetryCollection: true
 - task: TerraformCLI@2
   inputs:
